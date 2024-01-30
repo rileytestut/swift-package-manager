@@ -773,7 +773,7 @@ extension Workspace {
             // Otherwise, create a checkout at the destination from our repository store.
             //
             // Get handle to the repository.
-            let handle = try await {
+            let handle = try tsc_await {
                 repositoryManager.lookup(repository: dependency.packageRef.repository, skipUpdate: true, completion: $0)
             }
             let repo = try handle.open()
@@ -1132,7 +1132,7 @@ extension Workspace {
         // automatically manage the parallelism.
         let pins = pinsStore.pins.map({ $0 })
         DispatchQueue.concurrentPerform(iterations: pins.count) { idx in
-            _ = try? await {
+            _ = try? tsc_await {
                 containerProvider.getContainer(for: pins[idx].packageRef, skipUpdate: true, completion: $0)
             }
         }
@@ -1559,7 +1559,7 @@ extension Workspace {
 
             case .revision(let identifier):
                 // Get the latest revision from the container.
-                let container = try await {
+                let container = try tsc_await {
                     containerProvider.getContainer(for: packageRef, skipUpdate: true, completion: $0)
                 } as! RepositoryPackageContainer
                 var revision = try container.getRevision(forIdentifier: identifier)
@@ -1799,7 +1799,7 @@ extension Workspace {
         }
 
         // If not, we need to get the repository from the checkouts.
-        let handle = try await {
+        let handle = try tsc_await {
             repositoryManager.lookup(repository: package.repository, skipUpdate: true, completion: $0)
         }
 
@@ -1868,7 +1868,7 @@ extension Workspace {
             // way to get it back out of the resolver which is very
             // annoying. Maybe we should make an SPI on the provider for
             // this?
-            let container = try await { containerProvider.getContainer(for: package, skipUpdate: true, completion: $0) } as! RepositoryPackageContainer
+            let container = try tsc_await { containerProvider.getContainer(for: package, skipUpdate: true, completion: $0) } as! RepositoryPackageContainer
             let tag = container.getTag(for: version)!
             let revision = try container.getRevision(forTag: tag)
             checkoutState = CheckoutState(revision: revision, version: version)

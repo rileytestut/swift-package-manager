@@ -857,7 +857,7 @@ private func checkResolution(_ resolver: MockDependencyResolver, constraints: [M
                 guard case let .version(version)? = assignment[identifier] else {
                     fatalError("unexpected assignment")
                 }
-                let container = try! await { resolver.provider.getContainer(for: identifier, completion: $0) }
+                let container = try! tsc_await { resolver.provider.getContainer(for: identifier, completion: $0) }
                 return [identifier] + (try! container.getDependencies(at: version).map{ $0.identifier })
             })
         for (container, _) in assignment {

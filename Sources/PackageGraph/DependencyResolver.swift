@@ -1330,7 +1330,7 @@ public class DependencyResolver {
             }
 
             // Otherwise, fetch the container synchronously.
-            let container = try await { provider.getContainer(for: identifier, skipUpdate: skipUpdate, completion: $0) }
+            let container = try tsc_await { provider.getContainer(for: identifier, skipUpdate: skipUpdate, completion: $0) }
             self._fetchedContainers[identifier] = Basic.Result(container)
             return container
         }
