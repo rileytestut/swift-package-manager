@@ -15,7 +15,7 @@
 /// - Returns: The value wrapped by the async method's result.
 /// - Throws: The error wrapped by the async method's result
 public func tsc_await<T, ErrorType>(_ body: (@escaping (Result<T, ErrorType>) -> Void) -> Void) throws -> T {
-    return try tsc_await(body).get()
+    return try tsc_await(body).dematerialize()
 }
 
 public func tsc_await<T>(_ body: (@escaping (T) -> Void) -> Void) -> T {
@@ -37,7 +37,7 @@ public func tsc_await<T>(_ body: (@escaping (T) -> Void) -> Void) -> T {
 
 @available(*, deprecated, renamed: "tsc_await")
 public func await<T, ErrorType>(_ body: (@escaping (Result<T, ErrorType>) -> Void) -> Void) throws -> T {
-    return try tsc_await(body).get()
+    return try tsc_await(body).dematerialize()
 }
 
 @available(*, deprecated, renamed: "tsc_await")
