@@ -365,7 +365,7 @@ public final class Process: ObjectIdentifierProtocol {
         defer { posix_spawn_file_actions_destroy(&fileActions) }
 
         // Workaround for https://sourceware.org/git/gitweb.cgi?p=glibc.git;h=89e435f3559c53084498e9baad22172b64429362
-        let devNull = strdup("/dev/null")
+        let devNull = strdup("/dev/null")!
         defer { free(devNull) }
         // Open /dev/null as stdin.
         posix_spawn_file_actions_addopen(&fileActions, 0, devNull, O_RDONLY, 0)
@@ -391,7 +391,7 @@ public final class Process: ObjectIdentifierProtocol {
 
         let argv = CStringArray(arguments)
         let env = CStringArray(environment.map({ "\($0.0)=\($0.1)" }))
-        let rv = posix_spawnp(&processID, argv.cArray[0], &fileActions, &attributes, argv.cArray, env.cArray)
+        let rv = posix_spawnp(&processID, argv.cArray[0]!, &fileActions, &attributes, argv.cArray, env.cArray)
 
         guard rv == 0 else {
             throw SystemError.posix_spawn(rv, arguments)
